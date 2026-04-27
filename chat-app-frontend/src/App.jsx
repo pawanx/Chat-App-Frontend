@@ -3,7 +3,6 @@ import Chat from "./pages/Chat";
 import Register from "./components/Register";
 import Login from "./components/Login";
 import "../src/App.css";
-import { socket } from "./pages/Chat";
 
 function App() {
   const [user, setUser] = useState(() => {
@@ -19,7 +18,6 @@ function App() {
 
   // Logout handler
   const handleLogout = () => {
-    socket.disconnect();
     localStorage.removeItem("user");
     localStorage.removeItem("token");
     setUser(null);
