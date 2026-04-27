@@ -132,6 +132,8 @@ export default function Chat({ user }) {
     setText(e.target.value);
 
     if (!currentChat) return;
+    const socket = socketRef.current;
+    if (!socket) return;
 
     socket.emit("typing", {
       sender: user._id,
@@ -150,6 +152,8 @@ export default function Chat({ user }) {
 
   // ------------------ Status update ------------------
   useEffect(() => {
+    const socket = socketRef.current;
+    if (!socket) return;
     socket.on("message_status_update", ({ messageId, status }) => {
       console.log("LIVE STATUS:", messageId, status);
       setMessages((prev) =>
@@ -166,7 +170,11 @@ export default function Chat({ user }) {
 
   // ------------------ Typing listener ------------------
   useEffect(() => {
+    const socket = socketRef.current;
+    if (!socket) return;
     socket.on("typing", ({ sender }) => {
+      const socket = socketRef.current;
+      if (!socket) return;
       if (sender.toString() === currentChat?._id?.toString()) {
         setIsTyping(true);
       }
@@ -204,6 +212,8 @@ export default function Chat({ user }) {
 
   // ------------------ Receive message ------------------
   useEffect(() => {
+    const socket = socketRef.current;
+    if (!socket) return;
     socket.on("receive_message", (msg) => {
       console.log("RECEIVED:", msg._id, "FROM:", msg.sender);
       const senderId = msg.sender.toString();
@@ -263,7 +273,7 @@ export default function Chat({ user }) {
     });
 
     try {
-      const { data } = await axios.get(`${BASE_URL}/messages`, {
+      const { data } = await axios.get(`${API_URL}/messages`, {
         params: {
           sender: user._id,
           receiver: selectedUser._id,
@@ -296,6 +306,8 @@ export default function Chat({ user }) {
   // ------------------ Send message ------------------
   const sendMessage = () => {
     if (!text.trim() || !currentChat) return;
+    const socket = socketRef.current;
+    if (!socket) return;
 
     const tempId = "temp-" + Date.now();
 
