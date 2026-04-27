@@ -4,8 +4,6 @@ import { io } from "socket.io-client";
 import MessageList from "../components/MessageList";
 import "../styles/chat.css";
 
-// create socket once
-// export const socket = io("http://localhost:5001");
 const API_URL = "https://chat-app-backend-e81z.onrender.com";
 
 export default function Chat({ user }) {
@@ -58,10 +56,9 @@ export default function Chat({ user }) {
 
   // ------------------ ONLINE + OFFLINE  ------------------
   useEffect(() => {
+    const socket = socketRef.current;
+    if (!socket) return;
     socket.on("onlineUsers", (users) => {
-      const socket = socketRef.current;
-      if (!socket) return;
-
       const list = users.map((u) => u.toString());
       if (user?._id && !list.includes(user._id.toString())) {
         list.push(user._id.toString());
@@ -132,6 +129,7 @@ export default function Chat({ user }) {
     setText(e.target.value);
 
     if (!currentChat) return;
+
     const socket = socketRef.current;
     if (!socket) return;
 
@@ -173,8 +171,6 @@ export default function Chat({ user }) {
     const socket = socketRef.current;
     if (!socket) return;
     socket.on("typing", ({ sender }) => {
-      const socket = socketRef.current;
-      if (!socket) return;
       if (sender.toString() === currentChat?._id?.toString()) {
         setIsTyping(true);
       }
@@ -194,6 +190,8 @@ export default function Chat({ user }) {
 
   // ------------------ Join room ------------------
   useEffect(() => {
+    const socket = socketRef.current;
+    if (!socket || !user?._id) return;
     if (!user?._id) return;
     socket.emit("join", user._id);
   }, [user]);
@@ -290,14 +288,18 @@ export default function Chat({ user }) {
         [chatId]: 0,
       }));
 
-      data.forEach((msg) => {
-        if (msg.receiver === user._id && msg.status !== "seen") {
-          socket.emit("message_seen", {
-            messageId: msg._id,
-            sender: msg.sender,
-          });
-        }
-      });
+      const socket = socketRef.current;
+
+      if (socket) {
+        data.forEach((msg) => {
+          if (msg.receiver === user._id && msg.status !== "seen") {
+            socket.emit("message_seen", {
+              messageId: msg._id,
+              sender: msg.sender,
+            });
+          }
+        });
+      }
     } catch (err) {
       console.log(err);
     }
