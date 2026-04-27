@@ -1,0 +1,123 @@
+.message-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+/* Message */
+.message {
+  max-width: 60%;
+  padding: 10px;
+  border-radius: 10px;
+  word-wrap: break-word;
+
+  display: flex;
+  flex-direction: column; /* important for stacking text + meta */
+}
+
+/*  NEW: message text */
+.message-text {
+  margin-bottom: 4px;
+  line-height: 1.4;
+}
+
+/*  NEW: bottom row (ticks / time) */
+.message-meta {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 6px;
+}
+
+.message-animate {
+  animation: fadeSlideIn 0.25s ease forwards;
+}
+@keyframes fadeSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.sent.message-animate {
+  animation: slideFromRight 0.25s ease;
+}
+
+@keyframes slideFromRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+  }
+}
+
+.received.message-animate {
+  animation: slideFromLeft 0.25s ease;
+}
+
+@keyframes slideFromLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+/* Sent messages */
+.sent {
+  align-self: flex-end;
+  background: #25d366;
+  color: white;
+}
+
+/* Received messages */
+.received {
+  align-self: flex-start;
+  background: #e9f9ee;
+  color: black;
+}
+
+/* ticks base */
+.ticks {
+  font-size: 12px;
+  color: gray;
+  transition: color 0.2s ease;
+}
+
+/* sent (single tick) */
+.sent .ticks.sent {
+  color: white;
+}
+
+/* delivered → blue double ticks */
+.sent .ticks.delivered {
+  color: #dddddd;
+}
+
+/* seen → darker blue */
+.sent .ticks.seen {
+  color: #0b93f6;
+}
+
+/* received (hidden ticks) */
+.received .ticks {
+  display: none;
+}
+
+/* 🔥 time styling */
+.time {
+  font-size: 11px;
+  opacity: 0.7;
+}

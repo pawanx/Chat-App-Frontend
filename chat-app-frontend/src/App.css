@@ -1,0 +1,128 @@
+/* App container */
+.app-container {
+  font-family: Arial, sans-serif;
+  min-height: 100vh;
+  background: #f4f6f8;
+}
+
+/* Header */
+.app-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px 25px;
+  background: #25d366;
+  color: white;
+}
+
+.app-header h1 {
+  margin: 0;
+  font-size: 22px;
+}
+
+/* Logout button */
+.logout-btn {
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  background-color: #dc3545;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.logout-btn:hover {
+  background-color: #b02a37;
+}
+
+/* Auth layout (Login + Register) */
+.auth-container {
+  height: calc(100vh - 70px); /* adjust if header height changes */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Chat wrapper */
+.chat-wrapper {
+  padding: 20px;
+}
+
+/* User info section */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+/* Username text */
+.username {
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.auth-card-wrapper {
+  width: 350px;
+  background: white;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.auth-switch {
+  position: relative;
+  display: flex;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  overflow: hidden;
+  background: #eee;
+}
+
+/* buttons */
+.auth-switch button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  cursor: pointer;
+  z-index: 1;
+  font-weight: 500;
+}
+
+/* sliding background */
+.auth-switch::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  background: #007bff;
+  border-radius: 6px;
+  transition: transform 0.3s ease;
+}
+
+/* move slider */
+.auth-switch.register::before {
+  transform: translateX(100%);
+}
+
+/* active text color */
+.auth-switch.login button:first-child,
+.auth-switch.register button:last-child {
+  color: white;
+}
+
+.error-text {
+  color: #dc3545;
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-align: left;
+}
+.success-text {
+  color: #28a745;
+  font-size: 14px;
+  margin-bottom: 10px;
+  text-align: left;
+}
