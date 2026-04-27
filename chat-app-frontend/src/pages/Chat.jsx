@@ -1,4 +1,5 @@
 import { useEffect, useState, useRef } from "react";
+import EmojiPicker from "emoji-picker-react";
 import axios from "axios";
 import { io } from "socket.io-client";
 import MessageList from "../components/MessageList";
@@ -9,6 +10,7 @@ const API_URL = "https://chat-app-backend-e81z.onrender.com";
 export default function Chat({ user }) {
   const socketRef = useRef(null);
 
+  const [showPicker, setShowPicker] = useState(false);
   const [users, setUsers] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -52,6 +54,12 @@ export default function Chat({ user }) {
       hour: "2-digit",
       minute: "2-digit",
     });
+  };
+
+  //---------------------Handle Emoji Picker ---------------
+  const handleEmojiPicker = (emojiData) => {
+    setText((prev) => prev + emojiData.emoji);
+    setShowPicker(false);
   };
 
   // ------------------ ONLINE + OFFLINE  ------------------
@@ -392,7 +400,19 @@ export default function Chat({ user }) {
               bottomRef={bottomRef}
             />
 
-            <div className="input-area">
+            <div className="input-area" style={{ position: "relative" }}>
+              <button onClick={() => setShowPicker((prev) => !prev)}>😊</button>
+              {showPicker && (
+                <div
+                  style={{
+                    position: "absolute",
+                    bottom: "50px",
+                    zIndex: 1000,
+                  }}
+                >
+                  <EmojiPicker onEmojiClick={handleEmojiPicker} />
+                </div>
+              )}
               <input
                 value={text}
                 onChange={handleTyping}
