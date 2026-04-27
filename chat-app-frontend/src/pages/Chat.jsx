@@ -6,9 +6,11 @@ import "../styles/chat.css";
 
 // create socket once
 // export const socket = io("http://localhost:5001");
+const API_URL = "https://chat-app-backend-e81z.onrender.com";
 
 export default function Chat({ user }) {
-  const BASE_URL = "https://chat-app-backend-e81z.onrender.com";
+  const socketRef = useRef(null);
+
   const [users, setUsers] = useState([]);
   const [currentChat, setCurrentChat] = useState(null);
   const [messages, setMessages] = useState([]);
@@ -57,6 +59,9 @@ export default function Chat({ user }) {
   // ------------------ ONLINE + OFFLINE  ------------------
   useEffect(() => {
     socket.on("onlineUsers", (users) => {
+      const socket = socketRef.current;
+      if (!socket) return;
+
       const list = users.map((u) => u.toString());
       if (user?._id && !list.includes(user._id.toString())) {
         list.push(user._id.toString());
@@ -190,7 +195,7 @@ export default function Chat({ user }) {
     if (!user) return;
 
     axios
-      .get(`${BASE_URL}/users`, {
+      .get(`${API_URL}/users`, {
         params: { currentUserId: user._id },
       })
       .then((res) => setUsers(res.data))
