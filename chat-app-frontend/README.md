@@ -107,7 +107,7 @@ npm run dev
 
 ## Chat Interface
 
-![Chat](./src/assets/chat.png)
+![Chat](./src/assets/chat_interface.jpg)
 
 ---
 
